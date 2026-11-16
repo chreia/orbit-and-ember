@@ -11,7 +11,7 @@ A worldwide burning calendar built from harmonized NASA MODIS and VIIRS hotspots
 2026 NASA Space Apps Challenge: <i>Harmonization of MODIS and VIIRS Hot Spots</i>.</p>
 
 <h2 align="center"><a href="https://chreia.github.io/orbit-and-ember/">▶ Open the live app</a></h2>
-<p align="center"><a href="https://chreia.github.io/orbit-and-ember/">chreia.github.io/orbit-and-ember</a></p>
+<p align="center"><a href="https://chreia.github.io/orbit-and-ember/">chreia.github.io/orbit-and-ember</a> · <a href="https://drive.google.com/file/d/1scNQP7nGUn0NveoVy_ZJG1YBZOI45JvM/view?usp=share_link"><b>Watch the 30-second demo</b></a></p>
 
 <p align="center"><a href="https://chreia.github.io/orbit-and-ember/"><img src="docs/media/globe.jpg" alt="Orbit and Ember globe with live NASA FIRMS hotspots" width="900"></a></p>
 
