@@ -1,0 +1,23 @@
+{
+  "lon0": -73.6,
+  "lat0": -55.0,
+  "step": 0.025,
+  "nx": 800,
+  "ny": 1332,
+  "units": "m",
+  "rows": "north-to-south",
+  "value": "mean",
+  "water": "0 = sea-connected water (ocean, Rio de la Plata, fjords); inland lakes keep their surface elevation; land below sea level is negative; land that rounds to 0 is stored as 1",
+  "source": "Terrain Tiles (Mapzen, a Linux Foundation project), Registry of Open Data on AWS, https://registry.opendata.aws/terrain-tiles, terrarium tiles at zoom 9. Land from NASA SRTM (SRTMGL1 v3); the sources present in the tiles used: srtm, gmted, etopo1.",
+  "licence": "Source data are public domain; the tile provider requires this attribution: SRTM terrain data courtesy of the U.S. Geological Survey; GMTED2010 terrain data courtesy of the U.S. Geological Survey; Global ETOPO1 terrain data U.S. National Oceanic and Atmospheric Administration. https://github.com/tilezen/joerd/blob/master/docs/attribution.md",
+  "citation": "Terrain Tiles (Mapzen, a Linux Foundation project), Registry of Open Data on AWS, https://registry.opendata.aws/terrain-tiles. NASA JPL (2013). NASA Shuttle Radar Topography Mission Global 1 arc second V003. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/SRTM/SRTMGL1.003. Danielson, J. J. and Gesch, D. B. (2011). Global Multi-resolution Terrain Elevation Data 2010 (GMTED2010). U.S. Geological Survey Open-File Report 2011-1073. doi:10.3133/ofr20111073. Amante, C. and Eakins, B. W. (2009). ETOPO1 1 Arc-Minute Global Relief Model. NOAA Technical Memorandum NESDIS NGDC-24. doi:10.7289/V5C8276M.",
+  "dtype": "int16",
+  "byte_order": "little",
+  "nodata": -32768,
+  "method": "Mean of the land pixels whose centres fall in the cell (zoom 9, about 9 x 10 pixels per cell in the north to 9 x 16 in the south). Pixels at or below 0 m count as sea when they reach the open sea across gaps of up to 8 pixels, or lie in a closed basin deeper than -120 m (below any land in South America); a cell with under 50% land is 0. Land cells that round to 0 are stored as 1, so 0 always means sea. Land below sea level keeps its negative height, and inland lakes keep their surface height. Water that is sea in the zoom 8 mask of the 0.05 degree grid also counts as sea, so channels that break up at zoom 9 stay connected and both grids share their coastline. Before averaging, 111 isolated source pixels more than 1500 m from the median of their 5 x 5 neighbourhood (tile artifacts) were replaced by that median.",
+  "source_tiles": {
+    "etopo1": 967,
+    "gmted": 1157,
+    "srtm": 1173
+  }
+}

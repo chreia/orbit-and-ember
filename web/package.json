@@ -1,0 +1,35 @@
+{
+  "name": "focos-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "serve:relay": "node server/production.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"tests/*.test.ts\" \"tests/*.test.mjs\"",
+    "mock": "node scripts/mock_bundle.mjs"
+  },
+  "dependencies": {
+    "@deck.gl/core": "9.4.1",
+    "@deck.gl/layers": "9.4.1",
+    "@deck.gl/maplibre": "9.4.1",
+    "@fontsource/fira-code": "5.3.0",
+    "@fontsource/fira-sans": "5.3.0",
+    "@fontsource/overpass": "5.3.0",
+    "maplibre-gl": "6.18.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zustand": "5.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.3.0",
+    "playwright-core": "1.65.1",
+    "typescript": "7.0.2",
+    "vite": "8.3.8"
+  }
+}

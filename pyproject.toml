@@ -1,0 +1,27 @@
+[project]
+name = "focos"
+version = "0.1.0"
+description = "Harmonized MODIS and VIIRS hotspot record and burning-activity calendar."
+requires-python = ">=3.12"
+license = "Apache-2.0"
+dependencies = [
+  "numpy>=2.0", "pandas>=2.2", "pyarrow>=17", "scipy>=1.14", "scikit-learn>=1.5",
+  "lightgbm>=4.5", "shapely>=2.0", "requests>=2.32", "pillow>=10",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["pipeline"]
+include = ["focos*"]
+
+[tool.ruff]
+line-length = 110
+
+[tool.ruff.lint]
+select = ["F", "E4", "E7", "E9", "I", "UP", "B", "SIM115"]

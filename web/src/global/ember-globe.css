@@ -1,0 +1,84 @@
+.global-ember{position:fixed;z-index:1000;right:320px;bottom:185px;width:80px;height:110px;font-family:inherit}
+.global-ember.dragging{user-select:none}
+.global-ember-character{position:relative;width:80px;height:110px;padding:0;border:0;background:transparent;cursor:grab;touch-action:none;filter:drop-shadow(0 8px 14px #0009)}
+.global-ember.dragging .global-ember-character{cursor:grabbing}
+.global-ember-sprite{position:absolute;inset:0;background:url('/ember-pixel-sheet.png') no-repeat 0 0/400% 200%;image-rendering:pixelated;pointer-events:none;animation:global-ember-idle 2.8s ease-in-out infinite}
+.global-ember.thinking .global-ember-sprite{background:url('/ember-thinking-1.png') no-repeat center/contain;animation:global-ember-think 1.2s steps(1,end) infinite}
+.global-ember.speaking .global-ember-sprite{background:url('/ember-talking-1.png') no-repeat center/contain;animation:global-ember-talk .85s steps(1,end) infinite}
+.global-ember.listening .global-ember-sprite{animation:global-ember-idle 1.2s ease-in-out infinite}
+.global-ember-name{position:absolute;right:-2px;bottom:0;padding:3px 7px;border:1px solid #55bce6;border-radius:99px;background:#092449;color:#d7f7ff;font-size:10px;font-weight:800;white-space:nowrap;pointer-events:none}
+.global-ember.entering .global-ember-character::before{content:'';position:absolute;left:0;right:0;bottom:0;height:18px;border-radius:50%;background:radial-gradient(ellipse,#5de7ff 10%,#0879b8 45%,transparent 72%);box-shadow:0 0 20px #38caff;animation:global-ember-portal 2.6s ease-in-out both}
+.global-ember.entering .global-ember-sprite{background-image:url('/ember-climb-sheet.png');animation:global-ember-climb 2.6s steps(1,end) both}
+@keyframes global-ember-idle{50%{transform:translateY(-2px) scaleY(.99)}}
+@keyframes global-ember-think{0%,100%{background-image:url('/ember-thinking-1.png');transform:rotate(-2deg)}33%{background-image:url('/ember-thinking-2.png');transform:translateY(-2px)}66%{background-image:url('/ember-thinking-3.png');transform:translateY(-3px) rotate(2deg)}}
+@keyframes global-ember-talk{0%,100%{background-image:url('/ember-talking-1.png')}33%{background-image:url('/ember-talking-2.png');transform:translateY(-2px)}66%{background-image:url('/ember-talking-3.png')}}
+@keyframes global-ember-portal{0%,100%{opacity:0;transform:scaleX(.1)}18%,76%{opacity:1;transform:scaleX(1)}}
+@keyframes global-ember-climb{0%,12%{opacity:0;background-position:0 0;transform:translateY(30px)}25%{opacity:1;background-position:33.333% 0;transform:translateY(26px)}40%{background-position:66.666% 0;transform:translateY(20px)}55%{background-position:100% 0;transform:translateY(14px)}70%{background-position:33.333% 100%;transform:translateY(7px)}85%{background-position:66.666% 100%;transform:translateY(2px)}100%{background-position:100% 100%;transform:translateY(0)}}
+.global-ember-bubble{position:absolute;right:calc(100% + 8px);bottom:0;display:flex;flex-direction:column;width:min(330px,calc(100vw - 125px));max-height:420px;border:2px solid #63bfe8;border-radius:16px 16px 5px 16px;background:#09224af5;color:#f4f9ff;box-shadow:0 14px 35px #000b;backdrop-filter:blur(14px);padding:4px 0}
+.global-ember-bubble>header,.global-ember-bubble>form,.global-ember-bubble>footer,.global-ember-prompts{flex-shrink:0}
+.global-ember-bubble>.global-ember-report{flex:1 1 auto;min-height:0;max-height:240px}
+.global-ember-bubble>.global-ember-messages{flex:1 1 auto;min-height:0}
+.global-ember-bubble::after{content:'';position:absolute;right:-8px;bottom:29px;width:14px;height:14px;border-right:2px solid #63bfe8;border-bottom:2px solid #63bfe8;background:#09224a;transform:rotate(-45deg)}
+.global-ember.left-side .global-ember-bubble{left:calc(100% + 8px);right:auto;border-radius:16px 16px 16px 5px}
+.global-ember.left-side .global-ember-bubble::after{right:auto;left:-8px;border:0;border-left:2px solid #63bfe8;border-bottom:2px solid #63bfe8;transform:rotate(45deg)}
+.global-ember.top-side .global-ember-bubble{top:0;bottom:auto}
+.global-ember.top-side .global-ember-bubble::after{top:29px;bottom:auto}
+.global-ember.expanded .global-ember-bubble{max-height:min(490px,calc(100vh - 150px))}
+.global-ember-report{display:grid;gap:9px;margin:2px 9px 8px;padding:12px;border:1px solid #5baed0;border-radius:12px;background:linear-gradient(145deg,#113b63e8,#0a2446f0);box-shadow:inset 0 1px #b4eeff35;overflow:auto;max-height:min(470px,64vh);flex:0 0 auto}
+.global-ember-report-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.global-ember-report-head span{color:#91dfff;font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+.global-ember-report-head strong{font-size:16px;line-height:1.2;text-align:right}
+.global-ember-report-intro{margin:0;color:#b7d5e8;font-size:10px;line-height:1.35}
+.global-ember-details{min-width:0;color:#b7d5e8;font-size:10px}
+.global-ember-details summary{padding:5px 0;cursor:pointer;color:#a9e4ff}
+.global-ember-details[open]{display:grid;gap:8px}
+.global-ember-details>small{display:block;font-size:9px;line-height:1.4;margin:6px 0}
+.global-ember-report .global-ember-report-metrics b{font-size:15px}
+.global-ember-report .global-ember-report-metrics>div{padding:6px}
+.global-ember-bubble>.global-ember-report{padding:9px;gap:6px}
+.global-ember-report-metrics{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.global-ember-report-metrics>div{padding:8px;border:1px solid #57b7e052;border-radius:8px;background:#0b3155}
+.global-ember-report-metrics b{display:block;color:#ffcf77;font-size:17px;line-height:1.1}
+.global-ember-report-metrics span{display:block;margin-top:3px;color:#a8cde5;font-size:9px;line-height:1.3}
+.global-ember-season{padding:8px;border-radius:8px;background:#061d3d}
+.global-ember-season>div:first-child{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.global-ember-season b{font-size:10px}.global-ember-season small{font-size:9px;color:#a8cde5}
+.global-ember-season-bars{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;height:58px;margin-top:8px}
+.global-ember-season-bars>div{display:flex;align-items:center;justify-content:end;flex-direction:column;min-width:0;height:100%}
+.global-ember-season-bars i{display:block;width:100%;min-height:3px;border-radius:3px 3px 0 0;background:linear-gradient(#f8a853,#b84930)}
+.global-ember-season-bars i.peak{background:linear-gradient(#fff3a4,#ff9a34);box-shadow:0 0 8px #ffb54f9c}
+.global-ember-season-bars span{height:11px;color:#9dbdd4;font-size:8px;line-height:11px}
+.global-ember-anomaly{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0;padding:8px;border-left:3px solid #ffd075;border-radius:5px;background:#62402c75}
+.global-ember-anomaly strong{color:#ffdc91;font-size:12px}.global-ember-anomaly span{font-size:9px;text-align:right}
+.global-ember-anomaly.below{border-left-color:#7bd5ff;background:#194266a8}.global-ember-anomaly.below strong{color:#b2e8ff}
+.global-ember-report>small{font-size:9px;line-height:1.4;color:#b7d5e8}
+.global-ember-report>button{justify-self:start;border:1px solid #75d4f8;border-radius:99px;background:#165785;color:white;padding:5px 9px;font-size:10px;cursor:pointer}
+.global-ember-active-cells{display:grid;gap:3px}
+.global-ember-active-cells>span{font-size:9px;font-weight:800;letter-spacing:.1em;color:#91dfff;text-transform:uppercase}
+.global-ember-active-cells button{display:grid;grid-template-columns:20px 1fr auto;align-items:center;gap:5px;width:100%;padding:5px 6px;border:1px solid #4b90b566;border-radius:6px;background:#08284a;color:#d7eeff;text-align:left;cursor:pointer}
+.global-ember-active-cells button:hover{border-color:#81ddff;background:#174a70}
+.global-ember-active-cells button b{color:#7bc9e8;font-size:9px}.global-ember-active-cells button span{font-size:10px}.global-ember-active-cells button strong{color:#ffd089;font-size:10px}
+.global-ember-sources{display:flex;gap:12px}.global-ember-sources a{color:#a9e4ff;font-size:9px;text-decoration:underline;text-underline-offset:2px}
+.global-ember-bubble header{display:flex;align-items:center;gap:4px;padding:7px 8px 0 10px}
+.global-ember-bubble header strong{flex:1;color:#c7eaff;font-size:12px}
+.global-ember-bubble header button{width:24px;height:24px;border:0;border-radius:50%;background:#1d4974;color:#e6f5ff;cursor:pointer;font-size:17px}
+.global-ember-messages{min-height:40px;overflow:auto;display:flex;flex-direction:column;gap:7px;padding:8px 10px}
+.global-ember.expanded .global-ember-messages{min-height:110px}
+.global-ember-message{max-width:94%;font-size:11px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+.global-ember-message.user{align-self:flex-end;padding:6px 8px;border-radius:10px 10px 3px 10px;background:#20558b}
+.global-ember.expanded .global-ember-message.assistant{padding:7px 9px;border:1px solid #3c729b;border-radius:10px 10px 10px 3px;background:#12345a}
+.global-ember-message small{display:block;margin-top:4px;color:#a8c5db}
+.global-ember-wait{margin:0;color:#9fe3ff;font-size:11px;animation:global-ember-pulse .7s ease-in-out infinite alternate}
+@keyframes global-ember-pulse{to{opacity:.4}}
+.global-ember-prompts{display:flex;gap:4px;overflow:auto;padding:2px 8px 5px;min-height:30px}
+.global-ember-prompts button,.global-ember-focus,.global-ember-bubble footer button{border:1px solid #4a799f;border-radius:99px;background:#143a67;color:#e6f5ff;cursor:pointer;font-size:10px;padding:4px 7px;white-space:nowrap}
+.global-ember-focus{align-self:flex-start;margin:0 8px 4px}
+.global-ember-bubble form{display:flex;gap:5px;padding:5px 8px}
+.global-ember-bubble input{min-width:0;flex:1;border:1px solid #4a799f;border-radius:7px;background:#0c2a54;color:#fff;font:inherit;font-size:11px;padding:6px 7px}
+.global-ember-bubble form button{border:0;border-radius:7px;background:#3a9ad1;color:#041a36;font-weight:800;padding:6px 8px;cursor:pointer}
+.global-ember-bubble form button:disabled{opacity:.45}
+.global-ember-bubble footer{display:flex;align-items:center;gap:5px;padding:0 8px 7px}
+.global-ember-bubble footer span{margin-left:auto;color:#a8c5db;font-size:9px}
+.global-ember-bubble button:focus-visible,.global-ember-character:focus-visible,.global-ember-bubble input:focus-visible{outline:2px solid #d7ef78;outline-offset:2px}
+@media(max-width:760px){.global-ember{right:8px;bottom:170px;width:66px;height:92px}.global-ember-character{width:66px;height:92px}.global-ember-bubble{max-height:45vh}}
+@media(prefers-reduced-motion:reduce){.global-ember-sprite,.global-ember.entering .global-ember-sprite,.global-ember-wait,.global-ember.entering .global-ember-character::before{animation:none!important}}
