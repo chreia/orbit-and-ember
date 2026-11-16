@@ -14,6 +14,7 @@ const READ_ATTRS = new Set(['title', 'aria-label', 'placeholder', 'alt', 'aria-d
 /** Names that stay the same in every language, and notation. Matched against the trimmed text. */
 const ALLOW = new Set([
   'Focos',
+  'Orbit and Ember',
   'NASA FIRMS',
   'GWIS',
   'MW',

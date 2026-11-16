@@ -179,7 +179,7 @@ export function App() {
   }, [model]);
 
   useEffect(() => {
-    document.title = `Focos · ${view === 'methods' ? t('navMethods') : view === 'history' ? t('appTaglineShort') : t('titleWorld')}`;
+    document.title = `Orbit and Ember · ${view === 'methods' ? t('navMethods') : view === 'history' ? t('appTaglineShort') : t('titleWorld')}`;
   }, [view, t]);
 
   const synthetic = Boolean(model?.bundle.synthetic);
@@ -235,7 +235,7 @@ function Splash({ children }: { children: ReactNode }) {
       <div className="splash-card">
         <div className="splash-brand">
           <FocosMark size={34} />
-          <span>Focos</span>
+          <span>Orbit and Ember</span>
         </div>
         <p className="splash-tag">{t('appTaglineShort')}</p>
         {children}

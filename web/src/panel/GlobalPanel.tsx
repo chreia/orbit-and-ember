@@ -34,7 +34,7 @@ function linked(text: string, link: ReactNode) {
   return <>{before}{link}{after}</>;
 }
 
-/** The original Focos sidebar and calendar, supplied with worldwide GWIS burned-area data. */
+/** The original Orbit and Ember sidebar and calendar, supplied with worldwide GWIS burned-area data. */
 export function GlobalPanel() {
   const { t, fmt, monthShort, monthYear } = useI18n();
   const id = useId();

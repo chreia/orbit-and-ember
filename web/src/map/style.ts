@@ -1,7 +1,7 @@
 // The map's own style. The base is NASA imagery from GIBS (Blue Marble, shaded relief, or Black
 // Marble night lights) or a plain relief in the Space Apps blues; under it all runs one terrain
 // model (Terrain Tiles: SRTM, GMTED2010 and ETOPO1) that gives the 3D relief and the hillshade.
-// Reference labels come from OpenMapTiles and stay quiet so the hotspot data reads first. Focos's
+// Reference labels come from OpenMapTiles and stay quiet so the hotspot data reads first. Orbit and Ember's
 // own layers (the flat hotspot image, provinces, the selected area, the drawing draft) sit between.
 import type { LayerSpecification, StyleSpecification } from 'maplibre-gl';
 import type { Lang } from '../i18n.tsx';

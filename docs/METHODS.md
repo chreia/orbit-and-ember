@@ -1,6 +1,6 @@
 # Methods
 
-Focos turns two satellite fire records that cannot be compared directly into one monthly record of
+Orbit and Ember turns two satellite fire records that cannot be compared directly into one monthly record of
 burning activity, then lets anyone ask what a place's fire history looks like and whether this month is
 unusual. Every number quoted in the app and in `docs/results.md` is produced by the pipeline in
 `pipeline/focos/` from public NASA FIRMS archives.

@@ -23,7 +23,7 @@
 // Terms kept in English (Jamaicans code-mix technical words): hotspot, detection, sensor,
 // satellite, cell, grid, region, province, period, record, harmonized, baseline, median,
 // z, interval, anomaly, model estimate, terrain, scale, ratio, series, CSV, PNG, WebGL,
-// and every proper name (NASA, FIRMS, MODIS, VIIRS, S-NPP, NOAA-20, Terra, Aqua, Focos,
+// and every proper name (NASA, FIRMS, MODIS, VIIRS, S-NPP, NOAA-20, Terra, Aqua, Orbit and Ember,
 // Space Apps, Blue Marble, place names).
 //
 // Term choices:
@@ -235,7 +235,7 @@ export const jam: Record<Key, string> = {
   dataBy: 'Hotspot: NASA FIRMS, MODIS an VIIRS',
   spaceAppsAlt: 'NASA Space Apps Challenge',
   spaceAppsLine: 'Wi build dis fi di 2026 NASA International Space Apps Challenge. A nuh official NASA product.',
-  homeLabel: 'Focos, go back to di map',
+  homeLabel: 'Orbit and Ember, go back to di map',
   panelLabel: 'Area, calendar an analytics',
   stepArea: 'Area',
   stepCalendar: 'Burning calendar',
@@ -310,7 +310,7 @@ export const jam: Record<Key, string> = {
   story2Body: 'Each satellite detect a different number a hotspot ova di same fire dem, so if yuh add dem up, it mek a step wen VIIRS S-NPP join inna {year}: di straight add-up fi di three year from {year} a ×{naive} di three year before. Di harmonized record change ×{harm}.',
   story2BodyPlain: 'Each satellite detect a different number a hotspot ova di same fire dem, so if yuh add dem up, it mek a step wen VIIRS S-NPP join inna {year}. Di comparison below show each sensor.',
   story3Title: 'One scale fi di whole record',
-  story3Body: 'Focos put every month pon one scale: di hotspot weh VIIRS S-NPP alone woulda detect. Di month dem before {year} a model estimate from MODIS wid a 80% interval, test pon year dem weh di model neva see.',
+  story3Body: 'Orbit and Ember put every month pon one scale: di hotspot weh VIIRS S-NPP alone woulda detect. Di month dem before {year} a model estimate from MODIS wid a 80% interval, test pon year dem weh di model neva see.',
   story4Title: '{name}, 2020',
   story4Body: 'Pon one scale, di year dem compare fair. Inna di harmonized record, di Delta did have {a} hotspot inna 2008 an {b} inna 2020. Di calendar show 2020 month by month against di usual fi each month.',
   story4BodyPlain: 'Pon one scale, di year dem compare fair. Di calendar show 2020 month by month against di usual fi each month.',

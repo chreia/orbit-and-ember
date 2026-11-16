@@ -1,10 +1,10 @@
-# Focos signal relay
+# Orbit and Ember signal relay
 
 The globe shows a small signal network for a selected 0.5° FIRMS cell. NASA FIRMS is the observation source. A recipient node appears only after a contact subscribes to a nearby area and confirms the email link. Names and organizations are shown only if that contact opted in to public display. An email confirmation verifies mailbox control; it does **not** verify agency affiliation or authority to dispatch.
 
 ## Run
 
-The relay API is installed in the Focos Vite server and preview server. For deployment, run `npm run build` followed by `npm run serve:relay` on a Node host (set `PORT` and `HOST` as needed). The production entry point serves the built app and its relay API from one origin. It polls the shared global FIRMS feed every 10 minutes even when no browser is open. A static-only host does not run the relay; the UI then offers NASA's own FIRMS alerts instead.
+The relay API is installed in the Orbit and Ember Vite server and preview server. For deployment, run `npm run build` followed by `npm run serve:relay` on a Node host (set `PORT` and `HOST` as needed). The production entry point serves the built app and its relay API from one origin. It polls the shared global FIRMS feed every 10 minutes even when no browser is open. A static-only host does not run the relay; the UI then offers NASA's own FIRMS alerts instead.
 
 Set these server-side environment variables before starting the app:
 

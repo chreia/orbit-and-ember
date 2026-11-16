@@ -232,7 +232,7 @@ export function Downloads(props: {
         scale: calendar.scale,
         title: `${regionName}: ${t('calTitle').toLowerCase()}, ${seriesLabel(calendar.series, i18n)}`,
         subtitle: `${t(modeKey)} · ${manifest.country} · ${rangeLabel(axis, 0, axis.n - 1, i18n)}${bundle.synthetic ? ` · ${t('syntheticBadge')}` : ''}`,
-        credit: `Focos · NASA FIRMS MODIS C6.1 and VIIRS 375 m · ${t('generated', { date: manifest.generated.slice(0, 10) })}`,
+        credit: `Orbit and Ember · NASA FIRMS MODIS C6.1 and VIIRS 375 m · ${t('generated', { date: manifest.generated.slice(0, 10) })}`,
         i18n,
       });
       downloadBlob(blob, `focos_${base}_calendar_${calendar.series}_${calendar.mode}.png`);

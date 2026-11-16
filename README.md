@@ -1,17 +1,23 @@
 <p align="center">
-  <img src="web/public/brand/spaceapps-logo-white.svg" alt="NASA Space Apps Challenge 2026" height="64">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="web/public/brand/spaceapps-logo-white.svg">
+    <img src="web/public/brand/spaceapps-logo-black.svg" alt="NASA Space Apps Challenge 2026" height="64">
+  </picture>
 </p>
 
-<h1 align="center">Focos</h1>
+<h1 align="center">Orbit and Ember</h1>
 <p align="center"><b>Every fire season, on one scale.</b><br>
 A worldwide burning calendar built from harmonized NASA MODIS and VIIRS hotspots.<br>
-By <b>Orbit and Ember</b> for the 2026 NASA Space Apps Challenge: <i>Harmonization of MODIS and VIIRS Hot Spots</i>.</p>
+2026 NASA Space Apps Challenge: <i>Harmonization of MODIS and VIIRS Hot Spots</i>.</p>
 
-<p align="center"><img src="docs/media/globe.jpg" alt="Focos globe with live NASA FIRMS hotspots" width="900"></p>
+<h2 align="center"><a href="https://chreia.github.io/orbit-and-ember/">▶ Open the live app</a></h2>
+<p align="center"><a href="https://chreia.github.io/orbit-and-ember/">chreia.github.io/orbit-and-ember</a></p>
 
-## What Focos does
+<p align="center"><a href="https://chreia.github.io/orbit-and-ember/"><img src="docs/media/globe.jpg" alt="Orbit and Ember globe with live NASA FIRMS hotspots" width="900"></a></p>
 
-NASA has watched fire from orbit for twenty-five years with two instruments. MODIS (Terra and Aqua, 1 km) has flown since 2000. VIIRS (S-NPP and NOAA-20, 375 m) joined in 2012 and sees far more hotspots over the same fires. Splice the records and fire appears to triple in 2012. Focos harmonizes them into one consistent record, so every month since November 2000 is comparable with every other.
+## What Orbit and Ember does
+
+NASA has watched fire from orbit for twenty-five years with two instruments. MODIS (Terra and Aqua, 1 km) has flown since 2000. VIIRS (S-NPP and NOAA-20, 375 m) joined in 2012 and sees far more hotspots over the same fires. Splice the records and fire appears to triple in 2012. Orbit and Ember harmonizes them into one consistent record, so every month since November 2000 is comparable with every other.
 
 - **Live globe.** Every NASA FIRMS hotspot from the last 24 hours, worldwide, as 3D columns on NASA Blue Marble imagery.
 - **Burning calendar.** Every month for any country, province or custom area, coloured by activity, anomaly or percent of the usual.
@@ -27,7 +33,7 @@ NASA has watched fire from orbit for twenty-five years with two instruments. MOD
 
 ## The harmonization
 
-Focos counts the hotspots **a single VIIRS S-NPP observer would detect** in each 0.1° cell and month. One sensor means adding NOAA-20 in 2018 does not double the count, and VIIRS is the record that continues.
+Orbit and Ember counts the hotspots **a single VIIRS S-NPP observer would detect** in each 0.1° cell and month. One sensor means adding NOAA-20 in 2018 does not double the count, and VIIRS is the record that continues.
 
 1. **Ingest** NASA FIRMS archives for MODIS Collection 6.1 and VIIRS 375 m Collection 2, keeping vegetation fires at nominal and high confidence.
 2. **Detect outages** per sensor and scale each month by its observing fraction.
@@ -39,7 +45,7 @@ Focos counts the hotspots **a single VIIRS S-NPP observer would detect** in each
 
 | Method | Log error |
 |---|---|
-| **Focos transfer model** | **0.41** |
+| **Our transfer model** | **0.41** |
 | National ratio | 0.74 |
 
 The transfer model nearly halves the error of a national ratio, and its 80% interval covers 80.8% of held-out months. Full tables are in [`docs/results.md`](docs/results.md); the method is in [`docs/METHODS.md`](docs/METHODS.md).
@@ -80,7 +86,7 @@ python -m focos.export
 
 ## Team
 
-**Orbit and Ember**: Sebastien Kawada and Dylan Luke Holyoak.
+Sebastien Kawada and Dylan Luke Holyoak.
 
 ## License
 

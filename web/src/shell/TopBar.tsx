@@ -1,4 +1,4 @@
-// Top bar: the Focos name with the official NASA Space Apps Challenge logo beside it, the views and
+// Top bar: the Orbit and Ember name with the official NASA Space Apps Challenge logo beside it, the views and
 // the language picker. The logo file is used as published (public/brand/README.md).
 import { useI18n } from '../i18n.tsx';
 import type { Lang } from '../i18n.tsx';
@@ -8,7 +8,7 @@ import { useUi } from '../store.ts';
 
 const BASE = import.meta.env.BASE_URL ?? './';
 
-/** The Focos mark: a 3 x 3 calendar of warm cells, drawn from the count ramp. */
+/** The Orbit and Ember mark: a 3 x 3 calendar of warm cells, drawn from the count ramp. */
 export function FocosMark({ size = 22 }: { size?: number }) {
   const h = HEAT.dark;
   const c = [h[3], h[5], h[2], h[6], h[7], h[4], h[1], h[4], h[5]];
@@ -53,7 +53,7 @@ export function TopBar(props: { view: View; onView?: (v: View) => void; syntheti
           }}
         >
           <FocosMark />
-          <span>Focos</span>
+          <span>Orbit and Ember</span>
         </a>
         <span className="brand-sep" aria-hidden="true" />
         <SpaceAppsLogo height={52} />
