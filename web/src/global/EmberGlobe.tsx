@@ -246,7 +246,7 @@ export function EmberGlobe({ feed, cells, allCells = cells, selected, hourIndex 
     if (!/what am i seeing|explain globe|pattern|hotspot|where|most|cluster|concentrat|selected|this cell|click|inspect|coordinate|current fire|emergency|evacuat|safe|forecast/.test(message.toLowerCase())) {
       const controller = new AbortController(); request.current = controller;
       let timedOut = false;
-      const timeout = window.setTimeout(() => { timedOut = true; controller.abort(); }, 25000);
+      const timeout = window.setTimeout(() => { timedOut = true; controller.abort(); }, 50000);
       try {
         const response = await fetch(chatUrl, {
           method: 'POST', signal: controller.signal, headers: { 'Content-Type': 'application/json' },
@@ -254,7 +254,8 @@ export function EmberGlobe({ feed, cells, allCells = cells, selected, hourIndex 
         });
         if (response.ok) {
           const data = await response.json();
-          if (data.mode === 'model' && typeof data.reply === 'string' && data.reply.trim()) { reply = data.reply.trim().slice(0, 1200); model = true; }
+          // a complete model answer replaces the local one; anything else keeps the local answer, never a cut-off text
+          if (data.mode === 'model' && typeof data.reply === 'string' && data.reply.trim() && data.reply.length <= 4000) { reply = data.reply.trim(); model = true; }
         } else { reply = serviceError(response.status); }
       } catch { if (controller.signal.aborted && !timedOut) { setBusy(false); return; } reply = t('emNoConnect'); }
       finally { window.clearTimeout(timeout); request.current = null; }
@@ -315,7 +316,8 @@ export function EmberGlobe({ feed, cells, allCells = cells, selected, hourIndex 
       {!report && <div className="global-ember-prompts">{SUGGESTIONS.map(([key, command]) => <button type="button" key={key} onClick={() => void send(t(key), false, command)}>{t(key)}</button>)}</div>}
       {!report && top[0] && <button className="global-ember-focus" type="button" onClick={() => onFocus(top[0].lon, top[0].lat)}>{t('emShowTop')} <span aria-hidden="true">↗</span></button>}
       <form onSubmit={submit}><input aria-label={t('emAsk')} value={draft} onChange={e => setDraft(e.target.value)} maxLength={800} placeholder={t('emPlaceholder')} /><button type="submit" disabled={!draft.trim() || busy}>{t('emSend')}</button></form>
-      <footer><button type="button" onClick={() => { setVoice(!voice); if (voice) window.speechSynthesis?.cancel(); }}>{voice ? '🔊' : '🔇'} {voice ? t('emVoiceOn') : t('emVoiceOff')}</button><button type="button" disabled={!recognition()} onClick={toggleMic}>{listening ? '●' : '🎙'} {listening ? t('emListening') : t('emSpeak')}</button><span>{t('emFooterNote')}</span></footer>
+      {/* both labels of each toggle share one grid cell, so switching state never changes the button's width in any language */}
+      <footer><button className="global-ember-voice-toggle" type="button" aria-pressed={voice} onClick={() => { setVoice(!voice); if (voice) window.speechSynthesis?.cancel(); }}><span aria-hidden={!voice} className={voice ? '' : 'is-off'}>🔊 {t('emVoiceOn')}</span><span aria-hidden={voice} className={voice ? 'is-off' : ''}>🔇 {t('emVoiceOff')}</span></button><button className="global-ember-mic-toggle" type="button" aria-pressed={listening} disabled={!recognition()} onClick={toggleMic}><span aria-hidden={!listening} className={listening ? '' : 'is-off'}>● {t('emListening')}</span><span aria-hidden={listening} className={listening ? 'is-off' : ''}>🎙 {t('emSpeak')}</span></button><span>{t('emFooterNote')}</span></footer>
     </aside>}
     <button className="global-ember-character" type="button" aria-label={open ? t('emClose') : t('emOpen')} aria-expanded={open} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp} onClick={() => { if (suppressClick.current) { suppressClick.current = false; return; } setOpen(!open); }}><span className="global-ember-sprite" aria-hidden="true" />{!open && <span className="global-ember-name">{t('emAsk')}</span>}</button>
   </div>, document.body);

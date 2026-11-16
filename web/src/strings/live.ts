@@ -72,10 +72,6 @@ export const en = {
 
   // ---- live globe and the flight into hotspot terrain (MapView.tsx)
   mvGlobeLabel: 'Globe of satellite fire detections from the past 24 hours',
-  mvLiveNote: 'Worldwide FIRMS detections · past 24 hours',
-  mvFeedError: 'NASA fire feed unavailable · try refreshing the page',
-  mvFeedLoading: 'Loading worldwide NASA fire detections…',
-  mvNoteSelected: 'selected {n} at {lat}°, {lon}°',
   mvFlightPreparing: 'Preparing NASA observation…',
   mvFlightFlying: 'Flying to observed hotspot…',
   mvFlightControls: 'Drag to explore · right-drag to orbit · scroll to change altitude',
@@ -85,14 +81,17 @@ export const en = {
   mvFlightError: 'Unable to open this observation.',
   mvCardLabel: 'Selected NASA observation',
   mvCardTag: '3D terrain · NASA {satellite}',
+  mvCoord: '{lat}°{ns} · {lon}°{ew}',
+  mvNorth: 'N',
+  mvSouth: 'S',
+  mvEast: 'E',
+  mvWest: 'W',
   mvNearGround: 'Near ground',
   mvReturnGlobe: 'Return to globe',
-  mvCardNote: 'Elevation relief 1.5× · imagery is context, not live video. Outlines show detection pixels.',
 
   // ---- app shell, map layers and credits (App.tsx, LayerControls.tsx, Methods.tsx)
   appLoadingGlobal: 'Loading worldwide observations…',
   appGlobalName: 'Global fires',
-  appDockSummary: 'Historical model estimate · Argentina detail',
   appLayersNote: 'The map’s columns show live worldwide FIRMS observations. The historical record controls below apply to the Argentina detail and its timeline.',
   appImageryLayers: 'Blue Marble Next Generation, Blue Marble Shaded Relief and Bathymetry, VIIRS Black Marble.',
 };
@@ -165,10 +164,6 @@ export const es: Record<keyof typeof en, string> = {
   gpSourceLive: 'Detecciones de fuego en vivo: {link}.',
 
   mvGlobeLabel: 'Globo con las detecciones satelitales de fuego de las últimas 24 horas',
-  mvLiveNote: 'Detecciones FIRMS en todo el mundo · últimas 24 horas',
-  mvFeedError: 'Datos de fuego de NASA no disponibles · probá recargar la página',
-  mvFeedLoading: 'Cargando las detecciones de fuego de NASA en todo el mundo…',
-  mvNoteSelected: 'selección: {n} en {lat}°, {lon}°',
   mvFlightPreparing: 'Preparando la observación de NASA…',
   mvFlightFlying: 'Volando hacia el foco observado…',
   mvFlightControls: 'Arrastrá para explorar · arrastrá con el botón derecho para orbitar · usá la rueda para cambiar la altura',
@@ -178,13 +173,16 @@ export const es: Record<keyof typeof en, string> = {
   mvFlightError: 'No se pudo abrir esta observación.',
   mvCardLabel: 'Observación de NASA seleccionada',
   mvCardTag: 'Terreno 3D · NASA {satellite}',
+  mvCoord: '{lat}°{ns} · {lon}°{ew}',
+  mvNorth: 'N',
+  mvSouth: 'S',
+  mvEast: 'E',
+  mvWest: 'O',
   mvNearGround: 'Cerca del suelo',
   mvReturnGlobe: 'Volver al globo',
-  mvCardNote: 'Relieve exagerado 1,5× · las imágenes satelitales son contexto, no video en vivo. Los contornos muestran los píxeles de detección.',
 
   appLoadingGlobal: 'Cargando observaciones de todo el mundo…',
   appGlobalName: 'los incendios del mundo',
-  appDockSummary: 'Estimación histórica del modelo · detalle de Argentina',
   appLayersNote: 'Las columnas del mapa muestran observaciones FIRMS en vivo de todo el mundo. Los controles del registro histórico de abajo se aplican al detalle de Argentina y a su línea de tiempo.',
   appImageryLayers: 'Blue Marble Next Generation, Blue Marble Shaded Relief and Bathymetry y VIIRS Black Marble.',
 };

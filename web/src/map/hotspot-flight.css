@@ -1,3 +1,45 @@
-.hotspot-flight-card{position:absolute;z-index:8;top:80px;left:24px;width:280px;padding:20px;background:#091c35ed;border:1px solid #6784a6;border-radius:14px;color:#edf5ff;box-shadow:0 12px 40px #0006;contain:layout paint}.hotspot-flight-card span{font-size:10px;letter-spacing:.12em;color:#ffd79a;text-transform:uppercase}.hotspot-flight-card h2{font-size:30px;margin:12px 0}.hotspot-flight-card p{font-size:12px;line-height:1.6}.hotspot-flight-card button{padding:9px 12px;border:1px solid #6885a5;border-radius:20px;background:#173557;color:white;margin:4px;cursor:pointer}.hotspot-flight-card small{display:block;font-size:11px;color:#b8c9db;margin-top:12px}
+.hotspot-flight-card {
+  position: absolute;
+  z-index: 8;
+  top: 78px;
+  left: 12px;
+  box-sizing: border-box;
+  width: min(288px, calc(100% - 24px));
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  contain: layout paint;
+  animation: hotspot-appear .22s ease-out;
+  transition: opacity .2s ease, transform .2s ease;
+  max-height: calc(100dvh - 240px);
+  overflow-y: auto;
+}
+.hotspot-flight-card span { font-size: 10px; letter-spacing: .12em; color: var(--ink-2); text-transform: uppercase; }
+.hotspot-flight-card h2 { font-size: 30px; margin: 12px 0; }
+.hotspot-flight-card p { font-size: 12px; line-height: 1.6; color: var(--ink-2); }
+.hotspot-flight-card button {
+  padding: 9px 12px;
+  border: 1px solid var(--axis);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--ink);
+  margin: 4px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.hotspot-flight-card button:hover { background: var(--electric-blue); }
+.hotspot-flight-card button:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.hotspot-flight-card small { display: block; font-size: 11px; line-height: 1.5; color: var(--muted); margin-top: 12px; }
+@keyframes hotspot-appear { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .hotspot-flight-card { animation: none; } }
 
-.hotspot-flight-card{animation:hotspot-appear .25s ease-out}@keyframes hotspot-appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.hotspot-flight-card{animation:none}}
+.hotspot-flight-card.is-exiting { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+.hotspot-flight-card button { margin: 4px 6px 4px 0; }
+@media (prefers-reduced-motion: reduce) {
+  .hotspot-flight-card { transition: none; }
+}

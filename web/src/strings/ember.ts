@@ -153,7 +153,7 @@ export const es: Record<keyof typeof en, string> = {
   emEvFocus: 'Encuadre de la cámara: {region}.',
   emEvCounts: 'Los conteos cubren las celdas de la grilla en pantalla, no el total de un país: {detections} detecciones térmicas VIIRS en {cells} celdas activas de 0,5°.',
   emEvSource: 'Fuente: {status}.',
-  emStatusSnapshot: 'instantánea de una fecha anterior',
+  emStatusSnapshot: 'copia guardada con fecha',
   emStatusLive: 'datos en vivo de NASA FIRMS',
   emStatusNone: 'datos no disponibles',
   emEvSelected: 'La celda seleccionada en {coord} tiene {n} detecciones en la ventana visible.',

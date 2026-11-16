@@ -29,7 +29,7 @@ import { useI18n } from '../i18n.tsx';
 import type { TKey } from '../i18n.tsx';
 import { useModel } from '../model.ts';
 import { baseOf, columnsOn, reducedMotion, useUi, webglAvailable } from '../store.ts';
-import { installMapGuards, labelLanguage } from './basemap.ts';
+import { controlLanguage, installMapGuards, labelLanguage } from './basemap.ts';
 import type { BaseMap } from './style.ts';
 import { applyBase, FIRST_LABEL, focosStyle, LAND, SKY } from './style.ts';
 import { LOCAL_DEM_TILES, registerLocalDem } from './dem.ts';
@@ -204,11 +204,17 @@ export default function MapView() {
   const requestId=useRef(0);
   useEffect(()=>{warmup.current=createTerrainWarmup();return()=>{warmup.current?.dispose();if(hoverWarm.current)clearTimeout(hoverWarm.current);requestId.current++;};},[]);
   const [hotspot,setHotspot]=useState<FirePoint|null>(null);
+  // Retain the observation through the exit transition instead of unmounting mid-fade.
+  const [cardHotspot, setCardHotspot] = useState<FirePoint | null>(null);
+  useEffect(() => {
+    if (hotspot) { setCardHotspot(hotspot); return; }
+    const timeout = window.setTimeout(() => setCardHotspot(null), 220);
+    return () => window.clearTimeout(timeout);
+  }, [hotspot]);
   const [flightMessage,setFlightMessage]=useState<FlightMessage|''>('');
   const worldFeed=useRef<{points?:FirePoint[];startHour:number}|null>(null);
   const [emberFeed, setEmberFeed] = useState<{ fetchedAt: string; startHour?: number; latestObservation?: number; hourlyDetections?: number[]; cells: Array<{ lon: number; lat: number; count: number; latest: number }> } | null>(null);
   const [emberSource, setEmberSource] = useState<'live' | 'snapshot' | null>(null);
-  const [worldFeedError, setWorldFeedError] = useState(false);
   const previousCamera=useRef<{center:[number,number];zoom:number;pitch:number;bearing:number}|null>(null);
   const [worldCells, setWorldCells] = useState<Array<{ lon: number; lat: number; count: number; latest: number }>>([]);
   const [worldSelected, setWorldSelected] = useState<{ lon: number; lat: number; count: number; latest?: number } | null>(null);
@@ -233,10 +239,9 @@ export default function MapView() {
           const response = await fetch(url);
           if (!response.ok) continue;
           const feed = await response.json() as { points?:FirePoint[];startHour:number; fetchedAt?:string; latestObservation?: number; hourlyDetections?:number[]; cells?: Array<{ lon: number; lat: number; count: number; latest: number }> };
-          if (Array.isArray(feed.cells)) { if (active) {setWorldCells(feed.cells);worldFeed.current=feed;setEmberFeed({...feed,fetchedAt:feed.fetchedAt??'',cells:feed.cells});setEmberSource(source);setWorldFeedError(false);} return; }
+          if (Array.isArray(feed.cells)) { if (active) {setWorldCells(feed.cells);worldFeed.current=feed;setEmberFeed({...feed,fetchedAt:feed.fetchedAt??'',cells:feed.cells});setEmberSource(source);} return; }
         } catch { /* try the saved observation snapshot */ }
       }
-      if (active) setWorldFeedError(true);
     }
     void refreshWorld();
     const timer = window.setInterval(() => { void refreshWorld(); }, 10 * 60_000);
@@ -796,8 +801,10 @@ export default function MapView() {
   // ------------------------------------------------------------ place names follow the language
   useEffect(() => {
     const map = mapRef.current;
-    if (map && ready) labelLanguage(map, lang);
-  }, [ready, lang]);
+    if (!map || !ready) return;
+    labelLanguage(map, lang);
+    controlLanguage(map, t);
+  }, [ready, lang, t]);
 
   // ------------------------------------------------------------ camera: frame the area; the first time on the globe, fly in from space
   const lastFramed = useRef('');
@@ -870,7 +877,6 @@ export default function MapView() {
   return (
     <>
       <div ref={container} className={`map ${tool !== 'select' ? 'drawing' : ''}`} role="region" aria-label={view === 'explore' ? t('mvGlobeLabel') : t('mapLabel')} data-3d={cols} data-mode={mapMode} data-ready={ready} />
-      {view === 'explore' && !networkOpen && <div className="map-note world-live-note" role="status">{t(emberFeed ? 'mvLiveNote' : worldFeedError ? 'mvFeedError' : 'mvFeedLoading')}{worldSelected ? ` · ${t('mvNoteSelected', { n: fmt(worldSelected.count), lat: worldSelected.lat.toFixed(2), lon: worldSelected.lon.toFixed(2) })}` : ''}</div>}
       {view === 'explore' && <EmberGlobe
         feed={emberFeed} cells={visibleWorldCells} allCells={worldCells} selected={worldSelected ? { ...worldSelected, latest: worldSelected.latest ?? 0 } : null} source={emberSource}
         stale={emberFeed ? Number.isFinite(Date.parse(emberFeed.fetchedAt)) && Date.now() - Date.parse(emberFeed.fetchedAt) > 36 * 3_600_000 : false}
@@ -886,13 +892,13 @@ export default function MapView() {
           window.dispatchEvent(new CustomEvent('focos:ember-area', { detail: { code: area.code, monthIndex, showAnomaly } }));
         }}
       />}
-      {hotspot && !networkOpen && <section className="hotspot-flight-card" aria-label={t('mvCardLabel')}>
-        <span>{t('mvCardTag', { satellite: hotspot.satellite })}</span><h2>{fmt(hotspot.frp ?? NaN, 1)} MW</h2>
-        <p>{hotspot.date} · {hotspot.time.slice(0,2)}:{hotspot.time.slice(2)} UTC<br/>{hotspot.lat.toFixed(4)}°, {hotspot.lon.toFixed(4)}°</p>
-        <p role="status">{flightMessage && t(flightMessage)}</p>
-        <button onClick={()=>{warmup.current?.warm(hotspot.lon,hotspot.lat);flyHotspot([hotspot.lon,hotspot.lat],14.2,74,2200);}}>{t('mvNearGround')}</button>
+      {cardHotspot && <section className={`hotspot-flight-card${!hotspot || networkOpen ? ' is-exiting' : ''}`} aria-hidden={!hotspot || networkOpen} inert={!hotspot || networkOpen} aria-label={t('mvCardLabel')}>
+        <span>{t('mvCardTag', { satellite: cardHotspot.satellite })}</span><h2>{fmt(cardHotspot.frp ?? NaN, 1)} MW</h2>
+        <p>{cardHotspot.date} · {cardHotspot.time.slice(0,2)}:{cardHotspot.time.slice(2)} UTC<br/>{t('mvCoord', { lat: fmt(Math.abs(cardHotspot.lat), 3), ns: t(cardHotspot.lat < 0 ? 'mvSouth' : 'mvNorth'), lon: fmt(Math.abs(cardHotspot.lon), 3), ew: t(cardHotspot.lon < 0 ? 'mvWest' : 'mvEast') })}</p>
+        {/* the flight's progress, for screen readers; sighted readers follow the camera */}
+        <p className="sr-only" role="status">{flightMessage && t(flightMessage)}</p>
+        <button onClick={()=>{warmup.current?.warm(cardHotspot.lon,cardHotspot.lat);flyHotspot([cardHotspot.lon,cardHotspot.lat],14.2,74,2200);}}>{t('mvNearGround')}</button>
         <button onClick={leaveHotspot}>{t('mvReturnGlobe')}</button>
-        <small>{t('mvCardNote')}</small>
       </section>}
       {!hotspot && flightMessage && <div className="map-note" role="status">{t(flightMessage)}</div>}
       {!ready && (

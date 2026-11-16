@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import json
 import os
+import stat
+import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.error import URLError
 from urllib.parse import urlparse
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 SYSTEM = (
     "You are Ember, the concise guide to Focos's Global VIIRS Globe. "
@@ -22,6 +24,71 @@ SYSTEM = (
 )
 
 
+LANGUAGE = {
+    "en": "English",
+    "es": "Rioplatense Spanish as spoken in Argentina, using vos",
+    "jam": (
+        "Jamaican Patwa (Jamaican Creole English), written the way Jamaicans write it every day; "
+        "keep technical terms such as hotspot, satellite, VIIRS and NASA FIRMS in English"
+    ),
+}
+# Output ceilings are generous runaway guards, not length limits (SYSTEM asks for three sentences).
+# A reply stopped by the ceiling is asked for once more with the higher one; if that is cut off
+# too, the browser keeps its own deterministic answer instead of showing a truncated one.
+OUTPUT_CEILINGS = (1200, 3000)
+OLLAMA_CEILINGS = (600, 1500)
+MAX_REPLY_CHARS = 4000
+
+
+class _NoRedirect(HTTPRedirectHandler):
+    """Treat any redirect as a failure, so the API key never travels to another address."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+_OPENER = build_opener(_NoRedirect)
+
+
+def warn_if_key_file_shared() -> None:
+    """Print a warning (names and path only, never the key) when the key file is readable by others."""
+    path = os.environ.get("EMBER_MODEL_API_KEY_FILE")
+    if not path:
+        return
+    try:
+        mode = os.stat(path).st_mode
+    except OSError:
+        return
+    if mode & (stat.S_IRWXG | stat.S_IRWXO):
+        print(
+            f"Warning: EMBER_MODEL_API_KEY_FILE ({path}) can be read by group or others; "
+            f"restrict it with: chmod 600 {path}",
+            file=sys.stderr,
+        )
+
+
+def _ask(
+    url: str, request_data: dict, headers: dict, native_ollama: bool, ceiling: int
+) -> tuple[str | None, bool]:
+    """One request to the model: the reply text, and whether the ceiling stopped it."""
+    data = dict(request_data)
+    if native_ollama:
+        data["options"] = {**data["options"], "num_predict": ceiling}
+    elif urlparse(url).hostname == "openrouter.ai":
+        data["max_tokens"] = ceiling
+    else:
+        data["max_completion_tokens"] = ceiling
+    request = Request(url, data=json.dumps(data).encode(), headers=headers, method="POST")
+    with _OPENER.open(request, timeout=90) as response:
+        result = json.load(response)
+    if native_ollama:
+        content, cut = result["message"]["content"], result.get("done_reason") == "length"
+    else:
+        choice = result["choices"][0]
+        content, cut = choice["message"]["content"], choice.get("finish_reason") == "length"
+    return (content.strip() if isinstance(content, str) else None), cut
+
+
 def model_reply(payload: dict) -> str | None:
     url = os.environ.get("EMBER_MODEL_URL", "").strip()
     if not url:
@@ -30,7 +97,8 @@ def model_reply(payload: dict) -> str | None:
     if not isinstance(message, str) or not 1 <= len(message.strip()) <= 800:
         return None
     history = payload.get("history")
-    turns = [{"role": "system", "content": SYSTEM}]
+    language = LANGUAGE.get(payload.get("lang"), LANGUAGE["en"])
+    turns = [{"role": "system", "content": f"{SYSTEM} Answer in {language}."}]
     context = payload.get("context")
     if isinstance(context, dict):
         safe = {k: str(context[k])[:100] for k in ("view", "mode", "feed_status", "replay_hour") if k in context}
@@ -45,30 +113,28 @@ def model_reply(payload: dict) -> str | None:
     request_data = {"model": os.environ.get("EMBER_MODEL_NAME", "Qwen/Qwen3.5-9B"),
                     "messages": turns, "temperature": 0.2}
     # OpenRouter follows max_tokens; Cascade's original local Qwen service uses
-    # max_completion_tokens. Keep both providers compatible without extra flags.
+    # max_completion_tokens; Ollama's native API uses num_predict (set per attempt in _ask).
     native_ollama = urlparse(url).path == "/api/chat"
     if native_ollama:
         request_data.pop("temperature")
-        request_data.update({"stream": False, "think": False, "options": {"temperature": 0.1, "num_predict": 140}})
-    elif urlparse(url).hostname == "openrouter.ai":
-        request_data["max_tokens"] = 280
-    else:
-        request_data["max_completion_tokens"] = 280
-    body = json.dumps(request_data).encode()
+        request_data.update({"stream": False, "think": False, "options": {"temperature": 0.1}})
     headers = {"Content-Type": "application/json", "Accept": "application/json"}
     key = os.environ.get("EMBER_MODEL_API_KEY", "").strip()
     if not key and (key_file := os.environ.get("EMBER_MODEL_API_KEY_FILE")):
         try:
-            key = open(key_file, encoding="utf-8").read().strip()
+            with open(key_file, encoding="utf-8") as f:
+                key = f.read().strip()
         except OSError:
             return None
     if key:
         headers["Authorization"] = f"Bearer {key}"
     try:
-        with urlopen(Request(url, data=body, headers=headers, method="POST"), timeout=90) as response:
-            result = json.load(response)
-        content = result["message"]["content"] if native_ollama else result["choices"][0]["message"]["content"]
-        return content.strip()[:2500] if isinstance(content, str) and content.strip() else None
+        for ceiling in OLLAMA_CEILINGS if native_ollama else OUTPUT_CEILINGS:
+            content, cut = _ask(url, request_data, headers, native_ollama, ceiling)
+            if cut:
+                continue
+            return content if content and len(content) <= MAX_REPLY_CHARS else None
+        return None
     except (OSError, URLError, ValueError, KeyError, IndexError, TypeError):
         return None
 
@@ -119,6 +185,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    warn_if_key_file_shared()
     port = int(os.environ.get("EMBER_PORT", "8021"))
     print(f"Ember bridge listening on http://127.0.0.1:{port}; model {'configured' if os.environ.get('EMBER_MODEL_URL') else 'not configured'}")
     ThreadingHTTPServer(("127.0.0.1", port), Handler).serve_forever()

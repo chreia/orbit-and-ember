@@ -7,6 +7,7 @@ import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { MapLibreOverlay } from '@deck.gl/maplibre';
 import { ColumnLayer } from '@deck.gl/layers';
 import { focosStyle, SKY } from '../map/style.ts';
+import { controlLanguage } from '../map/basemap.ts';
 import { labelLanguage } from '../map/basemap.ts';
 import { reducedMotion, useUi } from '../store.ts';
 import { useI18n } from '../i18n.tsx';
@@ -170,6 +171,10 @@ export default function GlobalView() {
   }, []);
   // place names follow the reading language after the map is built
   useEffect(() => { const m = map.current; if (ready && m) labelLanguage(m, lang); }, [ready, lang]);
+
+  useEffect(() => {
+    if (ready && map.current) controlLanguage(map.current, t);
+  }, [ready, t]);
 
   const cells = useMemo(() => (feed?.cells ?? []).map((cell) => ({ ...cell, count: cell.hours.slice(0, hourIndex + 1).reduce((sum, value) => sum + value, 0) })).filter((cell) => cell.count > 0), [feed, hourIndex]);
   async function enterCell(cell:Cell) {

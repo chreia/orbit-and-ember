@@ -78,7 +78,13 @@
 .global-ember-bubble form button{border:0;border-radius:7px;background:#3a9ad1;color:#041a36;font-weight:800;padding:6px 8px;cursor:pointer}
 .global-ember-bubble form button:disabled{opacity:.45}
 .global-ember-bubble footer{display:flex;align-items:center;gap:5px;padding:0 8px 7px}
-.global-ember-bubble footer span{margin-left:auto;color:#a8c5db;font-size:9px}
+/* Reserve the longest label's space so voice/listening state never reflows the footer. */
+.global-ember-bubble footer .global-ember-voice-toggle,
+.global-ember-bubble footer .global-ember-mic-toggle{box-sizing:border-box;display:inline-grid;flex:0 0 auto;height:28px;padding:4px 7px;text-align:center;line-height:18px}
+.global-ember-bubble footer .global-ember-voice-toggle>span,
+.global-ember-bubble footer .global-ember-mic-toggle>span{grid-area:1/1}
+.global-ember-bubble footer button>.is-off{visibility:hidden}
+.global-ember-bubble footer>span{min-width:0;flex:1;margin-left:auto;color:#a8c5db;font-size:9px}
 .global-ember-bubble button:focus-visible,.global-ember-character:focus-visible,.global-ember-bubble input:focus-visible{outline:2px solid #d7ef78;outline-offset:2px}
 @media(max-width:760px){.global-ember{right:8px;bottom:170px;width:66px;height:92px}.global-ember-character{width:66px;height:92px}.global-ember-bubble{max-height:45vh}}
 @media(prefers-reduced-motion:reduce){.global-ember-sprite,.global-ember.entering .global-ember-sprite,.global-ember-wait,.global-ember.entering .global-ember-character::before{animation:none!important}}

@@ -277,17 +277,13 @@ function Explore() {
         </div>
         <div className="map-top-right">
           <ViewControls />
-          {!signalOpen && <PanelBoundary name={t('nameLayers')}>
+          <PanelBoundary name={t('nameLayers')}>
             <LayerControls />
-          </PanelBoundary>}
+          </PanelBoundary>
         </div>
         <div className="map-bottom">
           {/* the readout and the timeline belong to the Argentina record; the worldwide globe shows the past 24 hours */}
           {view !== 'explore' && <MapReadout />}
-          {view === 'explore' && <details className="model-estimate-dock">
-            <summary>{t('appDockSummary')}</summary>
-            <PanelBoundary name={t('nameMap')}><MapStatus /></PanelBoundary>
-          </details>}
           {view !== 'explore' && (
             <PanelBoundary name={t('nameTimeline')}>
               <TimeScrubber />

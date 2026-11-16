@@ -9,6 +9,10 @@ import * as world from './strings/world.ts';
 export const enCore = {
   // ---- shared by several parts of the worldwide view
   wholeWorld: 'Whole world',
+  mapZoomIn: 'Zoom in',
+  mapZoomOut: 'Zoom out',
+  mapResetNorth: 'Drag to rotate the map, click to face north',
+  mapCredits: 'Show or hide the map credits',
 
   // ---- views and tours
   navArgentina: 'Argentina record',
@@ -54,6 +58,10 @@ export type ExtraKey = keyof typeof enExtra;
 
 const esCore: Record<keyof typeof enCore, string> = {
   wholeWorld: 'Todo el mundo',
+  mapZoomIn: 'Acercar',
+  mapZoomOut: 'Alejar',
+  mapResetNorth: 'Arrastrá para girar el mapa, hacé clic para orientarlo al norte',
+  mapCredits: 'Mostrar u ocultar los créditos del mapa',
 
   navArgentina: 'Registro de Argentina',
   navArgentinaShort: 'Argentina',
